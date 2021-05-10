@@ -16,7 +16,9 @@ services:
         - /app/node_modules
     build: .
     environment: 
-      - PORT=3000
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - SESSION_SECRET=${SESSION_SECRET}
     # ports:
     #   - "3000:3000"
   mongo:
@@ -26,7 +28,7 @@ services:
       - mongo-db:/data/db
     image: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=toor
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   redis:
     image: redis

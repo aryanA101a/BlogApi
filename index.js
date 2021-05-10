@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const express = require("express");
-const cors=require('cors')
+const cors = require("cors");
 const postRouter = require("./routes/postRoutes");
 const userRouter = require("./routes/userRoutes");
 
@@ -11,14 +11,26 @@ app.use(express.json());
 
 const redis = require("redis");
 const session = require("express-session");
+const {
+  MONGO_USER,
+  MONGO_PASSWORD,
+  MONGO_IP,
+  MONGO_PORT,
+  REDIS_PORT,
+  REDIS_URL,
+  SESSION_SECRET,
+} = require("./config/config");
 let RedisStore = require("connect-redis")(session);
-let redisClient = redis.createClient({ host: "redis", port: 6379 });
+let redisClient = redis.createClient({ host: REDIS_URL, port: REDIS_PORT });
 
 mongoose
-  .connect("mongodb://root:toor@mongo:27017/?authSource=admin", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("*************connected to db*************");
   })
@@ -28,13 +40,13 @@ mongoose
 
 app.get("/api/v1", (req, res) => {
   res.send("<h1>Balli<h1>");
-  console.log('************Balli************')
+  console.log("************Balli************");
 });
-app.use(cors({}))
+app.use(cors({}));
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
-    secret: "secret",
+    secret: SESSION_SECRET,
     cookie: {
       secure: false,
       resave: false,

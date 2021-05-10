@@ -17,6 +17,7 @@ services:
         - ./:/app
         - /app/node_modules
     build: .
+    image: zeezomozi/node-app
     environment: 
       - MONGO_USER=${MONGO_USER}
       - MONGO_PASSWORD=${MONGO_PASSWORD}

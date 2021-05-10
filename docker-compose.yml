@@ -3,6 +3,8 @@ volumes:
   mongo-db:
 services:
   nginx:
+    depends_on: 
+      - node-app
     image: nginx:latest
     ports:
       - "3000:80"
